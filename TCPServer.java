@@ -18,12 +18,24 @@ public class TCPServer {
                      BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                      PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
-                    String registrationRequest = input.readLine();
-                    System.out.println("Received registration request from client: " + registrationRequest);
+                    String requestType = input.readLine();
+                    System.out.println("Received request from client: " + requestType);
 
-                    String registrationResponse = processRegistration(registrationRequest);
-                    output.println(registrationResponse);
-                    System.out.println("Sent registration response to client: " + registrationResponse);
+                    String response;
+                    switch (requestType) {
+                        case "register":
+                            response = processRegistration(input);
+                            break;
+                        case "login":
+                            response = processLogin(input);
+                            break;
+                        default:
+                            response = "Invalid request type";
+                            break;
+                    }
+
+                    output.println(response);
+                    System.out.println("Sent response to client: " + response);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -34,8 +46,8 @@ public class TCPServer {
         }
     }
 
-    private static String processRegistration(String registrationRequest) {
-        String[] fields = registrationRequest.split(",");
+    private static String processRegistration(BufferedReader input) throws IOException {
+        String[] fields = input.readLine().split(",");
 
         if (fields.length != 6) {
             return "Invalid registration request. Please provide all required fields.";
@@ -60,6 +72,27 @@ public class TCPServer {
         return "Registration successful";
     }
 
+    private static String processLogin(BufferedReader input) throws IOException {
+        String email = input.readLine();
+        String password = input.readLine();
+
+        User user = findUserByEmail(email);
+        if (user != null && user.getPassword().equals(password)) {
+            return "Login successful";
+        } else {
+            return "Login failed. Incorrect email or password.";
+        }
+    }
+
+    private static User findUserByEmail(String email) {
+        for (User user : users.values()) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     private static class User {
         private String name;
         private String ppsNumber;
@@ -75,6 +108,14 @@ public class TCPServer {
             this.password = password;
             this.address = address;
             this.initialBalance = initialBalance;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPassword() {
+            return password;
         }
     }
 }
