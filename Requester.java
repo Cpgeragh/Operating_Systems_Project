@@ -29,7 +29,7 @@ public class Requester {
                     System.out.println(message);
                     response = input.next();
                     sendMessage(response);
-
+                
                     if (response.equalsIgnoreCase("1")) {
                         for (int i = 0; i < 6; i++) {
                             message = (String) in.readObject();
@@ -39,13 +39,26 @@ public class Requester {
                         }
                     }
 
+                    else if(response.equalsIgnoreCase("2"))
+					{
+						message = (String)in.readObject();
+						int numMessage = Integer.parseInt(message);
+						
+						for(int i=0; i<numMessage; i++)
+						{
+							message = (String)in.readObject();
+							System.out.println(message);
+						}
+					}
+                
+                    // After processing the registration or other actions
                     message = (String) in.readObject();
                     System.out.println(message);
                     response = input.next();
                     sendMessage(response);
-
-                } while (response.equalsIgnoreCase("1"));
-
+                
+                } while(response.equalsIgnoreCase("1"));
+                
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

@@ -1,12 +1,13 @@
-import java.util.Iterator;
-import java.util.LinkedList;
 
-public class AccountRegistry {
+import java.util.Iterator;
+import java.util.LinkedList;public class 
+
+AccountRegistry {
 
     LinkedList<Account> accountList;
 
     public AccountRegistry() {
-        accountList = new LinkedList<>();
+        accountList = new LinkedList<Account>();
     }
 
     public synchronized void addAccount(String name, String ppsNumber, String email, String password, String address, String initialBalance) {
