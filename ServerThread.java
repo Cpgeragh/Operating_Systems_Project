@@ -24,6 +24,62 @@ public class ServerThread extends Thread {
 
     }
 
+    private void successfulLogin() {
+
+        try {
+
+            String accountAction;
+
+            do {
+
+                sendMessage("Login successful! Please choose an option:");
+                sendMessage("1. Lodge money");
+                sendMessage("2. Retrieve all registered users");
+                sendMessage("3. Transfer money to another account");
+                sendMessage("4. View all all account transactions");
+                sendMessage("5. Update your password");
+
+                accountAction = (String) in.readObject();
+
+                if (accountAction.equalsIgnoreCase("1")) {
+
+                } 
+                
+                else if (accountAction.equalsIgnoreCase("2")) {
+
+                }
+                
+                else if (accountAction.equalsIgnoreCase("3")) {
+
+                }
+
+                else if (accountAction.equalsIgnoreCase("4")) {
+
+                }
+                
+                else if (accountAction.equalsIgnoreCase("5")) {
+
+                }
+
+                sendMessage("Please enter 1 to repeat");
+                accountAction = (String) in.readObject();
+
+            } while (accountAction.equals("1"));
+
+            in.close();
+            out.close();
+
+        } 
+        
+        catch (ClassNotFoundException | IOException e) {
+
+            e.printStackTrace();
+            
+        }
+
+    }
+
+
     public void run() {
 
         try {
@@ -77,7 +133,7 @@ public class ServerThread extends Thread {
 
                     if (loginSuccessful) {
 
-                        sendMessage("Login successful");
+                        successfulLogin();
 
                     }
                     
@@ -134,4 +190,5 @@ public class ServerThread extends Thread {
         }
         
     }
-}
+
+} // Inheritor Class Ends
