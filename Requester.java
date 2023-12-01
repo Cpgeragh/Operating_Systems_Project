@@ -39,7 +39,21 @@ public class Requester {
                         }
                     }
 
-                    else if(response.equalsIgnoreCase("2"))
+                     // Check for the login entry loop (option 3)
+                     else if (response.equalsIgnoreCase("2")) {
+                        
+                        for (int i = 0; i < 2; i++) {
+                            message = (String) in.readObject();
+                            System.out.println(message);
+                            response = input.next();
+                            sendMessage(response);
+                        }
+                        // Process the login response from the server
+                        message = (String) in.readObject();
+                        System.out.println(message);
+                     }
+
+                    else if(response.equalsIgnoreCase("3"))
 					{
 						message = (String)in.readObject();
 						int numMessage = Integer.parseInt(message);

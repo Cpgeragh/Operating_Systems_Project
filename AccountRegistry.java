@@ -1,8 +1,7 @@
-
 import java.util.Iterator;
-import java.util.LinkedList;public class 
+import java.util.LinkedList;
 
-AccountRegistry {
+public class AccountRegistry {
 
     LinkedList<Account> accountList;
 
@@ -15,20 +14,18 @@ AccountRegistry {
         accountList.add(temp);
     }
 
-    public synchronized String searchAccount(String name) {
-        Iterator<Account> i = accountList.iterator();
-        int found = 0;
-        String response = "Not found";
-        while (i.hasNext() && found == 0) {
-            Account temp = i.next();
+    public synchronized Account findAccountByEmailAndPassword(String email, String password) {
+        Iterator<Account> iterator = accountList.iterator();
 
-            if (temp.getAccountName().equalsIgnoreCase(name)) {
-                found = 1;
-                response = temp.toString();
+        while (iterator.hasNext()) {
+            Account account = iterator.next();
+
+            if (account.getEmail().equalsIgnoreCase(email) && account.getPassword().equals(password)) {
+                return account;
             }
         }
 
-        return response;
+        return null;
     }
 
     public synchronized String[] getListing() {
