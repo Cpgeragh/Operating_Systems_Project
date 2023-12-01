@@ -36,7 +36,9 @@ public class ServerThread extends Thread {
 
             do {
 
-                sendMessage("Please enter 1 to REGISTER AN ACCOUNT, 2 for LOGIN, or 3 for THE BOOK LISTING");
+                sendMessage("Please enter 1 to REGISTER A NEW ACCOUNT");
+                sendMessage("Please enter 2 to LOGIN");
+                sendMessage("Please enter 3 to VIEW STORED ACCOUNTS");
                 message = (String) in.readObject();
 
                 if (message.equalsIgnoreCase("1")) {

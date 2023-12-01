@@ -32,6 +32,13 @@ public class Requester {
 
                 do {
 
+                    // Register Account Message
+                    message = (String) in.readObject();
+                    System.out.println(message);
+
+                    message = (String) in.readObject();
+                    System.out.println(message);
+
                     message = (String) in.readObject();
                     System.out.println(message);
                     response = input.next();
@@ -154,5 +161,5 @@ public class Requester {
         client.run();
 
     }
-    
+
 }
