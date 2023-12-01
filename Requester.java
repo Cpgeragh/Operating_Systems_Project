@@ -41,9 +41,10 @@ public class Requester {
 
                     message = (String) in.readObject();
                     System.out.println(message);
+
                     response = input.next();
                     sendMessage(response);
-                
+
                     if (response.equalsIgnoreCase("1")) {
 
                         for (int i = 0; i < 6; i++) {
@@ -57,9 +58,9 @@ public class Requester {
 
                     }
 
-                     // Check for the login entry loop (option 3)
-                     else if (response.equalsIgnoreCase("2")) {
-                        
+                    // Check for the login entry loop (option 3)
+                    else if (response.equalsIgnoreCase("2")) {
+
                         for (int i = 0; i < 2; i++) {
 
                             message = (String) in.readObject();
@@ -73,51 +74,85 @@ public class Requester {
                         message = (String) in.readObject();
                         System.out.println(message);
 
-                     }
+                        // If login is successful, respond to the login menu
+                        if (message.equalsIgnoreCase("Login successful! Please choose an option:")) {
 
-                    else if(response.equalsIgnoreCase("3")) {
+                            do {
 
-						message = (String)in.readObject();
-						int numMessage = Integer.parseInt(message);
-						
-						for(int i=0; i<numMessage; i++)
-						{
+                                message = (String) in.readObject();
+                                System.out.println(message);
 
-							message = (String)in.readObject();
-							System.out.println(message);
+                                message = (String) in.readObject();
+                                System.out.println(message);
 
-						}
+                                message = (String) in.readObject();
+                                System.out.println(message);
 
-					}
-                
+                                message = (String) in.readObject();
+                                System.out.println(message);
+                                
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+                                response = input.next();
+                                sendMessage(response);
+
+                                // Repeat until user decides to exit the login menu
+                                message = (String) in.readObject();
+                                System.out.println(message);
+                                response = input.next();
+                                sendMessage(response);
+
+                            } while (!response.equalsIgnoreCase("0"));
+
+                        }
+
+                    }
+
+                    else if (response.equalsIgnoreCase("3")) {
+
+                        message = (String) in.readObject();
+                        int numMessage = Integer.parseInt(message);
+
+                        for (int i = 0; i < numMessage; i++) {
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                        }
+
+                    }
+
                     // After processing the registration or other actions
                     message = (String) in.readObject();
                     System.out.println(message);
                     response = input.next();
                     sendMessage(response);
-                
-                } while(response.equalsIgnoreCase("1"));
-                
+
+                } while (response.equalsIgnoreCase("1"));
+
             } catch (ClassNotFoundException e) {
 
                 e.printStackTrace();
 
             }
 
-        } 
-        
+        }
+
         catch (UnknownHostException unknownHost) {
 
             System.err.println("You are trying to connect to an unknown host!");
 
-        } 
-        
+        }
+
         catch (IOException ioException) {
 
             ioException.printStackTrace();
 
-        } 
-        
+        }
+
         finally {
 
             try {
@@ -126,8 +161,8 @@ public class Requester {
                 out.close();
                 requestSocket.close();
 
-            } 
-            
+            }
+
             catch (IOException ioException) {
 
                 ioException.printStackTrace();
@@ -145,8 +180,8 @@ public class Requester {
             out.writeObject(msg);
             out.flush();
 
-        } 
-        
+        }
+
         catch (IOException ioException) {
 
             ioException.printStackTrace();
