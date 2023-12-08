@@ -73,6 +73,50 @@ public class ServerThread extends Thread {
             sendMessage("\nError, No Users Found");
         }
     }
+
+    private void transferMoney() {
+        try {
+            // Prompt for recipient details
+            sendMessage("\nEnter the recipient's email address:");
+            String recipientEmail = (String) in.readObject();
+    
+            sendMessage("Enter the recipient's PPS number:");
+            String recipientPPS = (String) in.readObject();
+    
+            // Validate recipient details
+            Account recipientAccount = myRegistry.findAccountByEmailAndPPS(recipientEmail, recipientPPS);
+    
+            if (recipientAccount == null) {
+                sendMessage("\nError: Recipient account not found.");
+                return;
+            }
+    
+            // Prompt for the amount to transfer
+            sendMessage("\nEnter the amount to transfer:");
+            float amountToTransfer = Float.parseFloat((String) in.readObject());
+    
+            // Validate the amount
+            if (amountToTransfer <= 0) {
+                sendMessage("\nError: Invalid amount to transfer.");
+                return;
+            }
+    
+            // Check if the sender has sufficient balance
+            if (loggedInAccount.getInitialBalance() < amountToTransfer) {
+                sendMessage("\nError: Insufficient funds for the transfer.");
+                return;
+            }
+    
+            // Perform the money transfer
+            loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
+            recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
+    
+            sendMessage("\nMoney transfer successful. New balance is: " + loggedInAccount.getInitialBalance());
+    
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     
     ///// LOGIN METHOD //////
     private void successfulLogin() {
@@ -104,6 +148,8 @@ public class ServerThread extends Thread {
                 }
 
                 else if (accountAction.equalsIgnoreCase("3")) {
+
+                    transferMoney();
 
                 }
 

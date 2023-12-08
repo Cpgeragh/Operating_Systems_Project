@@ -130,6 +130,54 @@ public class Requester {
 
                             }
 
+                            // If the user chose to transfer money
+                            else if (response.equalsIgnoreCase("3")) {///////////
+                                
+                                for (int i = 0; i < 2; i++) {
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+                                response = input.next();
+                                sendMessage(response);
+
+                            }
+
+                            if (message.equalsIgnoreCase("\nError: Recipient account not found.")) {
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                            };
+
+                             // Display the message asking to enter the amount to lodge
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                // User input for the amount to lodge
+                                float amountToLodge = input.nextFloat();
+                                sendMessage(String.valueOf(amountToLodge));
+
+                                if(message.equalsIgnoreCase("\nError: Invalid amount to transfer.")){
+
+                                    message = (String) in.readObject();
+                                    System.out.println(message);
+
+                                };
+
+                                if(message.equalsIgnoreCase("\nError: Insufficient funds for the transfer.")){
+
+                                    message = (String) in.readObject();
+                                    System.out.println(message);
+
+                                };
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                
+
+                            }//////////
+
                             // After processing action
                             message = (String) in.readObject();
                             System.out.println(message);

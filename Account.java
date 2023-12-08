@@ -46,6 +46,10 @@ public class Account {
         return initialBalance;
     }
 
+    public String getPpsNumber() {
+        return ppsNumber;
+    }
+
     public void lodgeMoney(float amount) {
         initialBalance += amount;
     }

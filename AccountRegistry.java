@@ -38,6 +38,20 @@ public class AccountRegistry {
 
     }
 
+    public synchronized Account findAccountByEmailAndPPS(String email, String ppsNumber) {
+        Iterator<Account> iterator = accountList.iterator();
+    
+        while (iterator.hasNext()) {
+            Account account = iterator.next();
+    
+            if (account.getEmail().equalsIgnoreCase(email) && account.getPpsNumber().equals(ppsNumber)) {
+                return account;
+            }
+        }
+    
+        return null;
+    }
+
     public synchronized String[] getListing() {
 
         int length = accountList.size();
