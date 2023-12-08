@@ -41,5 +41,13 @@ public class Account {
         return name + "*" + ppsNumber + "*" + email + "*" + password + "*" + address + "*" + initialBalance;
         
     }
+
+    public float getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void lodgeMoney(float amount) {
+        initialBalance += amount;
+    }
     
 }

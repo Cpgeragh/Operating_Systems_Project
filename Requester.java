@@ -12,147 +12,155 @@ public class Requester {
     Scanner input;
 
     Requester() {
-
         input = new Scanner(System.in);
-
     }
 
     void run() {
 
         try {
 
+            // Connect to the server
             requestSocket = new Socket("127.0.0.1", 2004);
-            System.out.println("Connected to localhost in port 2004");
+            System.out.println("Connected to localhost on port 2004");
 
+            // Initialize input and output streams
             out = new ObjectOutputStream(requestSocket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(requestSocket.getInputStream());
 
-            try {
+            ///// FIRST MENU /////
+            do {
 
-                do {
+                message = (String) in.readObject();
+                System.out.println(message);
 
-                    // Register Account Message
-                    message = (String) in.readObject();
-                    System.out.println(message);
+                message = (String) in.readObject();
+                System.out.println(message);
 
-                    message = (String) in.readObject();
-                    System.out.println(message);
+                message = (String) in.readObject();
+                System.out.println(message);
 
-                    message = (String) in.readObject();
-                    System.out.println(message);
+                // User input
+                response = input.next();
+                sendMessage(response);
 
-                    response = input.next();
-                    sendMessage(response);
+                if (response.equalsIgnoreCase("1")) {
 
-                    if (response.equalsIgnoreCase("1")) {
+                    ///// REGISTRATION /////
+                    for (int i = 0; i < 6; i++) {
 
-                        for (int i = 0; i < 6; i++) {
-
-                            message = (String) in.readObject();
-                            System.out.println(message);
-                            response = input.next();
-                            sendMessage(response);
-
-                        }
+                        message = (String) in.readObject();
+                        System.out.println(message);
+                        response = input.next();
+                        sendMessage(response);
 
                     }
 
-                    // Check for the login entry loop (option 3)
-                    else if (response.equalsIgnoreCase("2")) {
+                } 
+                
+                else if (response.equalsIgnoreCase("2")) {
 
-                        for (int i = 0; i < 2; i++) {
+                    ///// LOGGED IN DETAILS /////
+                    for (int i = 0; i < 2; i++) {
+
+                        message = (String) in.readObject();
+                        System.out.println(message);
+                        response = input.next();
+                        sendMessage(response);
+
+                    }
+
+                    // Process login menu response
+                    message = (String) in.readObject();
+                    System.out.println(message);
+
+                    if (message.equalsIgnoreCase("Login successful! Please choose an option:")) {
+
+                        ///// LOGGED IN MENU /////
+                        do {
+
+                            // Display menu options after successful login
+                            message = (String) in.readObject();
+                            System.out.println(message);
 
                             message = (String) in.readObject();
                             System.out.println(message);
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                            // User input for menu options
                             response = input.next();
                             sendMessage(response);
 
-                        }
+                            // If the user chose to lodge money
+                            if (response.equalsIgnoreCase("1")) {
 
-                        // Process the login response from the server
+                                // Display the message asking to enter the amount to lodge
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                // User input for the amount to lodge
+                                float amountToLodge = input.nextFloat();
+                                sendMessage(String.valueOf(amountToLodge));
+
+                            }
+
+                            // After processing actions
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                            message = (String) in.readObject();
+                            System.out.println(message);
+
+                            // User input to repeat or exit
+                            response = input.next();
+                            sendMessage(response);
+
+                        } while (response.equalsIgnoreCase("1"));
+
+                    }
+
+                } 
+                
+                else if (response.equalsIgnoreCase("3")) {
+
+                    // View stored accounts
+                    message = (String) in.readObject();
+                    int numMessage = Integer.parseInt(message);
+
+                    for (int i = 0; i < numMessage; i++) {
+
                         message = (String) in.readObject();
                         System.out.println(message);
 
-                        // If login is successful, respond to the login menu
-                        if (message.equalsIgnoreCase("Login successful! Please choose an option:")) {
-
-                            do {
-
-                                message = (String) in.readObject();
-                                System.out.println(message);
-
-                                message = (String) in.readObject();
-                                System.out.println(message);
-
-                                message = (String) in.readObject();
-                                System.out.println(message);
-
-                                message = (String) in.readObject();
-                                System.out.println(message);
-                                
-                                message = (String) in.readObject();
-                                System.out.println(message);
-
-                                message = (String) in.readObject();
-                                System.out.println(message);
-                                response = input.next();
-                                sendMessage(response);
-
-                                // Repeat until user decides to exit the login menu
-                                message = (String) in.readObject();
-                                System.out.println(message);
-                                response = input.next();
-                                sendMessage(response);
-
-                            } while (!response.equalsIgnoreCase("0"));
-
-                        }
-
                     }
 
-                    else if (response.equalsIgnoreCase("3")) {
+                }
 
-                        message = (String) in.readObject();
-                        int numMessage = Integer.parseInt(message);
+                // After processing registration or other actions
+                message = (String) in.readObject();
+                System.out.println(message);
 
-                        for (int i = 0; i < numMessage; i++) {
+                // User input to repeat or exit
+                response = input.next();
+                sendMessage(response);
 
-                            message = (String) in.readObject();
-                            System.out.println(message);
+            } while (response.equalsIgnoreCase("1"));
 
-                        }
+        } catch (ClassNotFoundException | IOException e) {
 
-                    }
+            e.printStackTrace();
 
-                    // After processing the registration or other actions
-                    message = (String) in.readObject();
-                    System.out.println(message);
-                    response = input.next();
-                    sendMessage(response);
-
-                } while (response.equalsIgnoreCase("1"));
-
-            } catch (ClassNotFoundException e) {
-
-                e.printStackTrace();
-
-            }
-
-        }
-
-        catch (UnknownHostException unknownHost) {
-
-            System.err.println("You are trying to connect to an unknown host!");
-
-        }
-
-        catch (IOException ioException) {
-
-            ioException.printStackTrace();
-
-        }
-
+        } 
+        
         finally {
 
             try {
@@ -161,9 +169,7 @@ public class Requester {
                 out.close();
                 requestSocket.close();
 
-            }
-
-            catch (IOException ioException) {
+            } catch (IOException ioException) {
 
                 ioException.printStackTrace();
 
@@ -173,6 +179,7 @@ public class Requester {
 
     }
 
+    // Send a message to the server
     void sendMessage(String msg) {
 
         try {
@@ -180,9 +187,7 @@ public class Requester {
             out.writeObject(msg);
             out.flush();
 
-        }
-
-        catch (IOException ioException) {
+        } catch (IOException ioException) {
 
             ioException.printStackTrace();
 
@@ -190,9 +195,10 @@ public class Requester {
 
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         Requester client = new Requester();
+
         client.run();
 
     }
