@@ -110,19 +110,27 @@ public class Requester {
                                 float amountToLodge = input.nextFloat();
                                 sendMessage(String.valueOf(amountToLodge));
 
-                            }
-
-                            else if(message.equalsIgnoreCase("\nInvalid email or password: ")){
                                 message = (String) in.readObject();
                                 System.out.println(message);
 
-                            };
+                            }
 
-                            // After processing actions
+                            // If the user chose to see registered users
+                            else if (response.equalsIgnoreCase("2")) {
+                                message = (String) in.readObject();
+                                System.out.println(message);
 
-                            message = (String) in.readObject();
-                            System.out.println(message);
+                                // Read and print the user names, emails, and PPS numbers
+                                String userInfo;
 
+                                while (!(userInfo = (String) in.readObject()).equals("END_OF_USER_LISTING")) {
+                                    System.out.println(userInfo);
+                                    // Process userInfo as needed
+                                }
+
+                            }
+
+                            // After processing action
                             message = (String) in.readObject();
                             System.out.println(message);
 
@@ -133,6 +141,12 @@ public class Requester {
                         } while (response.equalsIgnoreCase("1"));
 
                     }
+
+                    else if(message.equalsIgnoreCase("\nInvalid email or password: ")){
+                        message = (String) in.readObject();
+                        System.out.println(message);
+
+                    };
 
                 } 
                 

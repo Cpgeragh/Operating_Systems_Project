@@ -27,16 +27,53 @@ public class ServerThread extends Thread {
 
     // Method to lodge money to the currently logged-in account
     private void lodgeMoney(float amount) {
+
         if (loggedInAccount != null) {
+
             // Call the lodgeMoney method of the Account class to update the balance
             loggedInAccount.lodgeMoney(amount);
             sendMessage("\nMoney lodged successfully. New balance is: " + loggedInAccount.getInitialBalance());
-        } else {
+
+        } 
+        
+        else {
+
             sendMessage("\nError, Account Not Found");
+
         }
+
     }
 
-
+    private void registeredUserList() {
+        String[] userList = myRegistry.getListing();
+    
+        if (userList.length > 0) {
+            // Send the number of registered users
+            sendMessage("\nRegistered Users: " + userList.length);
+    
+            // Iterate through the user list
+            for (String user : userList) {
+                // Print the user information before processing
+                System.out.println("DEBUG: Raw user info: " + user);
+    
+                // Extract information directly from the user string
+                String[] userInfo = user.split("\n"); // Split by newline character
+                String name = userInfo[1].substring(userInfo[1].indexOf(":") + 2);
+                String ppsNumber = userInfo[2].substring(userInfo[2].indexOf(":") + 2);
+                String email = userInfo[3].substring(userInfo[3].indexOf(":") + 2);
+    
+                // Display the user information
+                sendMessage("\nName: " + name + "\nPPS Number: " + ppsNumber + "\nEmail: " + email);
+            }
+    
+            // Send a signal to indicate the end of user information
+            sendMessage("END_OF_USER_LISTING");
+        } else {
+            // Handle the case where no users are found
+            sendMessage("\nError, No Users Found");
+        }
+    }
+    
     ///// LOGIN METHOD //////
     private void successfulLogin() {
 
@@ -62,6 +99,8 @@ public class ServerThread extends Thread {
 
                 else if (accountAction.equalsIgnoreCase("2")) {
 
+                    registeredUserList();
+
                 }
 
                 else if (accountAction.equalsIgnoreCase("3")) {
@@ -76,7 +115,7 @@ public class ServerThread extends Thread {
 
                 }
 
-                sendMessage("\nPlease enter 1 to repeat");
+                sendMessage("\nPlease enter 1 to repeat login menu");
                 accountAction = (String) in.readObject();
 
             } while (accountAction.equals("1"));
