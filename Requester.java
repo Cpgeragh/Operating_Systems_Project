@@ -149,13 +149,18 @@ public class Requester {
 
                             };
 
-                             // Display the message asking to enter the amount to lodge
+                            if (message.equalsIgnoreCase("\nEnter the amount to transfer: ")) {
+
+                                // Display the message asking to enter the amount to lodge
                                 message = (String) in.readObject();
                                 System.out.println(message);
 
                                 // User input for the amount to lodge
                                 float amountToLodge = input.nextFloat();
                                 sendMessage(String.valueOf(amountToLodge));
+
+                            };
+
 
                                 if(message.equalsIgnoreCase("\nError: Invalid amount to transfer.")){
 

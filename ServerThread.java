@@ -76,24 +76,34 @@ public class ServerThread extends Thread {
 
     private void transferMoney() {
         try {
+
+            float amountToTransfer = 0;
+
             // Prompt for recipient details
             sendMessage("\nEnter the recipient's email address:");
             String recipientEmail = (String) in.readObject();
     
-            sendMessage("Enter the recipient's PPS number:");
+            sendMessage("\nEnter the recipient's PPS number:");
             String recipientPPS = (String) in.readObject();
     
             // Validate recipient details
             Account recipientAccount = myRegistry.findAccountByEmailAndPPS(recipientEmail, recipientPPS);
     
             if (recipientAccount == null) {
+    
                 sendMessage("\nError: Recipient account not found.");
                 return;
+
             }
     
-            // Prompt for the amount to transfer
-            sendMessage("\nEnter the amount to transfer:");
-            float amountToTransfer = Float.parseFloat((String) in.readObject());
+            if(recipientAccount != null) {
+
+                // Prompt for the amount to transfer
+                sendMessage("\nEnter the amount to transfer: ");
+                amountToTransfer = Float.parseFloat((String) in.readObject());
+
+            }
+            
     
             // Validate the amount
             if (amountToTransfer <= 0) {
