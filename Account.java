@@ -38,7 +38,7 @@ public class Account {
 
     public String toString() {
 
-        return name + "*" + ppsNumber + "*" + email + "*" + password + "*" + address + "*" + initialBalance;
+        return "\nName: " + name + "\nPPS Number: " + ppsNumber + "\nEmail: " + email + "\nPassword: " + password + "\nAddress: " + address + "\nBalance: " + initialBalance + "\n";
         
     }
 

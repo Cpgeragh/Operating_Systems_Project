@@ -30,9 +30,9 @@ public class ServerThread extends Thread {
         if (loggedInAccount != null) {
             // Call the lodgeMoney method of the Account class to update the balance
             loggedInAccount.lodgeMoney(amount);
-            sendMessage("Money lodged successfully. New balance: " + loggedInAccount.getInitialBalance());
+            sendMessage("\nMoney lodged successfully. New balance is: " + loggedInAccount.getInitialBalance());
         } else {
-            sendMessage("No account logged in.");
+            sendMessage("\nError, Account Not Found");
         }
     }
 
@@ -46,7 +46,7 @@ public class ServerThread extends Thread {
 
             do {
 
-                sendMessage("1. Lodge money");
+                sendMessage("\n1. Lodge money");
                 sendMessage("2. Retrieve all registered users");
                 sendMessage("3. Transfer money to another account");
                 sendMessage("4. View all all account transactions");
@@ -55,7 +55,7 @@ public class ServerThread extends Thread {
                 accountAction = (String) in.readObject();
 
                 if (accountAction.equalsIgnoreCase("1")) {
-                    sendMessage("Enter the amount to lodge:");
+                    sendMessage("\nEnter the amount to lodge:");
                     float amountToLodge = Float.parseFloat((String) in.readObject());
                     lodgeMoney(amountToLodge);
                 }
@@ -76,7 +76,7 @@ public class ServerThread extends Thread {
 
                 }
 
-                sendMessage("Please enter 1 to repeat");
+                sendMessage("\nPlease enter 1 to repeat");
                 accountAction = (String) in.readObject();
 
             } while (accountAction.equals("1"));
@@ -99,22 +99,22 @@ public class ServerThread extends Thread {
 
         try {
 
-            sendMessage("Please enter the account name");
+            sendMessage("\nPlease enter the account name: ");
             String name = (String) in.readObject();
 
-            sendMessage("Please enter the PPS number");
+            sendMessage("Please enter the PPS number: ");
             String ppsNumber = (String) in.readObject();
 
-            sendMessage("Please enter the email");
+            sendMessage("Please enter the email: ");
             String email = (String) in.readObject();
 
-            sendMessage("Please enter the password");
+            sendMessage("Please enter the password: ");
             String password = (String) in.readObject();
 
-            sendMessage("Please enter the address");
+            sendMessage("Please enter the address: ");
             String address = (String) in.readObject();
 
-            sendMessage("Please enter the initial balance");
+            sendMessage("Please enter the initial balance: ");
             String initialBalance = (String) in.readObject();
 
             myRegistry.addAccount(name, ppsNumber, email, password, address, initialBalance);
@@ -140,9 +140,9 @@ public class ServerThread extends Thread {
 
             do {
 
-                sendMessage("Please enter 1 to REGISTER A NEW ACCOUNT");
+                sendMessage("\nPlease enter 1 to REGISTER A NEW ACCOUNT");
                 sendMessage("Please enter 2 to LOGIN");
-                sendMessage("Please enter 3 to VIEW STORED ACCOUNTS");
+                sendMessage("Please enter 3 to VIEW STORED ACCOUNTS\n");
                 message = (String) in.readObject();
 
                 if (message.equalsIgnoreCase("1")) {
@@ -153,17 +153,18 @@ public class ServerThread extends Thread {
 
                 else if (message.equalsIgnoreCase("2")) {
 
-                    sendMessage("Please enter the email");
+                    sendMessage("\nPlease enter the email");
                     String email = (String) in.readObject();
 
-                    sendMessage("Please enter the password");
+                    sendMessage("\nPlease enter the password");
                     String password = (String) in.readObject();
 
                     boolean loginSuccessful = performLogin(email, password);
 
-                    sendMessage("Login successful! Please choose an option:");
-
+                    
                     if (loginSuccessful) {
+                        
+                        sendMessage("\nLogin successful! Please choose an option:");
 
                         successfulLogin();
 
@@ -171,7 +172,7 @@ public class ServerThread extends Thread {
 
                     else {
 
-                        sendMessage("Invalid email or password");
+                        sendMessage("\nInvalid email or password");
 
                     }
 
@@ -187,7 +188,7 @@ public class ServerThread extends Thread {
 
                 }
 
-                sendMessage("Please enter 1 to repeat");
+                sendMessage("\nPlease enter 1 to repeat");
                 message = (String) in.readObject();
 
             } while (message.equalsIgnoreCase("1"));

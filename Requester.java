@@ -74,7 +74,7 @@ public class Requester {
                     message = (String) in.readObject();
                     System.out.println(message);
 
-                    if (message.equalsIgnoreCase("Login successful! Please choose an option:")) {
+                    if (message.equalsIgnoreCase("\nLogin successful! Please choose an option:")) {
 
                         ///// LOGGED IN MENU /////
                         do {
@@ -111,6 +111,12 @@ public class Requester {
                                 sendMessage(String.valueOf(amountToLodge));
 
                             }
+
+                            else if(message.equalsIgnoreCase("\nInvalid email or password: ")){
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                            };
 
                             // After processing actions
 
