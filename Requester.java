@@ -185,6 +185,17 @@ public class Requester {
 
                             }//////////
 
+                             // If the user chose to see registered users
+                            else if (response.equalsIgnoreCase("4")) {
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+
+                            }
+
                             // After processing action
                             message = (String) in.readObject();
                             System.out.println(message);

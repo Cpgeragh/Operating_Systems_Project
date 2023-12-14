@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 
 public class ServerThread extends Thread {
 
@@ -117,15 +118,58 @@ public class ServerThread extends Thread {
             }
             
             // Perform the money transfer
-            loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
-            recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
-    
-            sendMessage("\nMoney transfer successful. New balance is: " + loggedInAccount.getInitialBalance());
+        loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
+        recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
+
+        // Record the transaction in the transaction history of the sender
+        loggedInAccount.addTransaction(new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
+
+        // Record the transaction in the transaction history of the recipient
+        recipientAccount.addTransaction(new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
+
+        sendMessage("\nMoney transfer successful. New balance is: " + loggedInAccount.getInitialBalance());
     
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+    private void viewAccountTransactions() {
+
+    if (loggedInAccount != null) {
+
+        LinkedList<Transaction> transactions = loggedInAccount.getTransactionHistory();
+
+        if (transactions.size() > 0) {
+
+            sendMessage("\nTransaction History:");
+
+            for (Transaction transaction : transactions) {
+
+                sendMessage("Sender: " + transaction.getSenderEmail() +
+                        "\nRecipient: " + transaction.getRecipientEmail() +
+                        "\nAmount: " + transaction.getAmount() +
+                        "\n----------------------");
+
+            }
+
+        } 
+        
+        else {
+
+            sendMessage("\nNo transactions found.");
+
+        }
+
+    } 
+    
+    else {
+
+        sendMessage("\nError, Account Not Found");
+
+    }
+
+}
     
     ///// LOGIN METHOD //////
     private void successfulLogin() {
@@ -149,7 +193,7 @@ public class ServerThread extends Thread {
                     sendMessage("\nEnter the amount to lodge:");
                     float amountToLodge = Float.parseFloat((String) in.readObject());
                     lodgeMoney(amountToLodge);
-                    
+
                 }
 
                 else if (accountAction.equalsIgnoreCase("2")) {
@@ -165,6 +209,8 @@ public class ServerThread extends Thread {
                 }
 
                 else if (accountAction.equalsIgnoreCase("4")) {
+
+                    viewAccountTransactions();
 
                 }
 
