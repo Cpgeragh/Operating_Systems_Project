@@ -25,7 +25,7 @@ public class ServerThread extends Thread {
 
     }
 
-    // Method to lodge money to the currently logged-in account
+    ///// LODGE MONEY METHOD /////
     private void lodgeMoney(float amount) {
 
         if (loggedInAccount != null) {
@@ -96,27 +96,26 @@ public class ServerThread extends Thread {
 
             }
     
-            if(recipientAccount != null) {
+            else if(recipientAccount != null) {
 
                 // Prompt for the amount to transfer
                 sendMessage("\nEnter the amount to transfer: ");
                 amountToTransfer = Float.parseFloat((String) in.readObject());
 
+                        // Validate the amount
+                    if (amountToTransfer <= 0) {
+                        sendMessage("\nError: Invalid amount to transfer.");
+                        return;
+                    }
+            
+                    // Check if the sender has sufficient balance
+                    if (loggedInAccount.getInitialBalance() < amountToTransfer) {
+                        sendMessage("\nError: Insufficient funds for the transfer.");
+                        return;
+                    }
+
             }
             
-    
-            // Validate the amount
-            if (amountToTransfer <= 0) {
-                sendMessage("\nError: Invalid amount to transfer.");
-                return;
-            }
-    
-            // Check if the sender has sufficient balance
-            if (loggedInAccount.getInitialBalance() < amountToTransfer) {
-                sendMessage("\nError: Insufficient funds for the transfer.");
-                return;
-            }
-    
             // Perform the money transfer
             loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
             recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
@@ -146,9 +145,11 @@ public class ServerThread extends Thread {
                 accountAction = (String) in.readObject();
 
                 if (accountAction.equalsIgnoreCase("1")) {
+
                     sendMessage("\nEnter the amount to lodge:");
                     float amountToLodge = Float.parseFloat((String) in.readObject());
                     lodgeMoney(amountToLodge);
+                    
                 }
 
                 else if (accountAction.equalsIgnoreCase("2")) {

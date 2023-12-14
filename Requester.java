@@ -142,44 +142,46 @@ public class Requester {
 
                             }
 
-                            if (message.equalsIgnoreCase("\nError: Recipient account not found.")) {
+                            message = (String) in.readObject();
 
-                                message = (String) in.readObject();
+                            if (message.equalsIgnoreCase("\nError: Recipient account not found.")) {
+   
                                 System.out.println(message);
 
-                            };
+                            }
 
-                            if (message.equalsIgnoreCase("\nEnter the amount to transfer: ")) {
+                            else if (message.equalsIgnoreCase("\nEnter the amount to transfer: ")) {
 
                                 // Display the message asking to enter the amount to lodge
-                                message = (String) in.readObject();
                                 System.out.println(message);
 
                                 // User input for the amount to lodge
                                 float amountToLodge = input.nextFloat();
                                 sendMessage(String.valueOf(amountToLodge));
 
-                            };
-
-
-                                if(message.equalsIgnoreCase("\nError: Invalid amount to transfer.")){
-
-                                    message = (String) in.readObject();
-                                    System.out.println(message);
-
-                                };
-
-                                if(message.equalsIgnoreCase("\nError: Insufficient funds for the transfer.")){
-
-                                    message = (String) in.readObject();
-                                    System.out.println(message);
-
-                                };
-
                                 message = (String) in.readObject();
-                                System.out.println(message);
 
-                                           
+                                    if(message.equalsIgnoreCase("\nError: Invalid amount to transfer.")){
+
+                                        
+                                        System.out.println(message);
+
+                                    }
+
+                                    else if(message.equalsIgnoreCase("\nError: Insufficient funds for the transfer.")){
+
+                                        System.out.println(message);
+
+                                    }
+
+                                    else{
+
+                                        System.out.println(message);
+
+                                    }
+
+
+                            }   
 
                             }//////////
 
