@@ -21,7 +21,7 @@ public class Requester {
 
             // Connect to the server
             requestSocket = new Socket("127.0.0.1", 2004);
-            System.out.println("Connected to localhost on port 2004");
+            System.out.println("\nConnected to localhost on port 2004");
 
             // Initialize input and output streams
             out = new ObjectOutputStream(requestSocket.getOutputStream());
@@ -31,18 +31,17 @@ public class Requester {
             ///// FIRST MENU /////
             do {
 
-                message = (String) in.readObject();
-                System.out.println(message);
+                for (int i = 0; i < 3; i++) {
 
-                message = (String) in.readObject();
-                System.out.println(message);
+                        message = (String) in.readObject();
+                        System.out.println(message);
 
-                message = (String) in.readObject();
-                System.out.println(message);
+                    }
 
                 // User input
                 response = input.next();
                 sendMessage(response);
+                System.out.println("\nclient > " + response);
 
                 if (response.equalsIgnoreCase("1")) {
 
@@ -56,8 +55,8 @@ public class Requester {
 
                     }
 
-                } 
-                
+                }
+
                 else if (response.equalsIgnoreCase("2")) {
 
                     ///// LOGGED IN DETAILS /////
@@ -132,72 +131,70 @@ public class Requester {
 
                             // If the user chose to transfer money
                             else if (response.equalsIgnoreCase("3")) {///////////
-                                
+
                                 for (int i = 0; i < 2; i++) {
 
-                                message = (String) in.readObject();
-                                System.out.println(message);
-                                response = input.next();
-                                sendMessage(response);
+                                    message = (String) in.readObject();
+                                    System.out.println(message);
+                                    response = input.next();
+                                    sendMessage(response);
 
-                            }
-
-                            message = (String) in.readObject();
-
-                            if (message.equalsIgnoreCase("\nError: Recipient account not found.")) {
-   
-                                System.out.println(message);
-
-                            }
-
-                            else if (message.equalsIgnoreCase("\nEnter the amount to transfer: ")) {
-
-                                // Display the message asking to enter the amount to lodge
-                                System.out.println(message);
-
-                                // User input for the amount to lodge
-                                float amountToLodge = input.nextFloat();
-                                sendMessage(String.valueOf(amountToLodge));
+                                }
 
                                 message = (String) in.readObject();
 
-                                    if(message.equalsIgnoreCase("\nError: Invalid amount to transfer.")){
+                                if (message.equalsIgnoreCase("\nError: Recipient account not found.")) {
 
-                                        
+                                    System.out.println(message);
+
+                                }
+
+                                else if (message.equalsIgnoreCase("\nEnter the amount to transfer: ")) {
+
+                                    // Display the message asking to enter the amount to lodge
+                                    System.out.println(message);
+
+                                    // User input for the amount to lodge
+                                    float amountToLodge = input.nextFloat();
+                                    sendMessage(String.valueOf(amountToLodge));
+
+                                    message = (String) in.readObject();
+
+                                    if (message.equalsIgnoreCase("\nError: Invalid amount to transfer.")) {
+
                                         System.out.println(message);
 
                                     }
 
-                                    else if(message.equalsIgnoreCase("\nError: Insufficient funds for the transfer.")){
+                                    else if (message
+                                            .equalsIgnoreCase("\nError: Insufficient funds for the transfer.")) {
 
                                         System.out.println(message);
 
                                     }
 
-                                    else{
+                                    else {
 
                                         System.out.println(message);
 
                                     }
 
+                                }
 
-                            }   
+                            } //////////
 
-                            }//////////
-
-                             // If the user chose to see registered users
+                            // If the user chose to see registered users
                             else if (response.equalsIgnoreCase("4")) {
-                                
-                                message = (String) in.readObject();
-                                System.out.println(message);
 
                                 message = (String) in.readObject();
                                 System.out.println(message);
 
+                                message = (String) in.readObject();
+                                System.out.println(message);
 
                             }
 
-                             else if (response.equalsIgnoreCase("5")) {
+                            else if (response.equalsIgnoreCase("5")) {
 
                                 message = (String) in.readObject();
                                 System.out.println(message);
@@ -207,23 +204,23 @@ public class Requester {
 
                                 message = (String) in.readObject();
 
-                                if(message.equalsIgnoreCase("\nError: Incorrect password.")){
+                                if (message.equalsIgnoreCase("\nError: Incorrect password.")) {
 
-                                        System.out.println(message);
+                                    System.out.println(message);
                                 }
 
-                                else if(message.equalsIgnoreCase("\nEnter your new password: ")){
+                                else if (message.equalsIgnoreCase("\nEnter your new password: ")) {
 
-                                        System.out.println(message);
-                                        
-                                        response = input.next();
-                                        sendMessage(response);
+                                    System.out.println(message);
 
-                                        message = (String) in.readObject();
-                                        System.out.println(message);
+                                    response = input.next();
+                                    sendMessage(response);
+
+                                    message = (String) in.readObject();
+                                    System.out.println(message);
 
                                 }
-                                
+
                             }
 
                             // After processing action
@@ -238,14 +235,15 @@ public class Requester {
 
                     }
 
-                    else if(message.equalsIgnoreCase("\nInvalid email or password: ")){
+                    else if (message.equalsIgnoreCase("\nInvalid email or password: ")) {
                         message = (String) in.readObject();
                         System.out.println(message);
 
-                    };
+                    }
+                    ;
 
-                } 
-                
+                }
+
                 else if (response.equalsIgnoreCase("3")) {
 
                     // View stored accounts
@@ -275,8 +273,8 @@ public class Requester {
 
             e.printStackTrace();
 
-        } 
-        
+        }
+
         finally {
 
             try {

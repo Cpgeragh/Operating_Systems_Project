@@ -16,15 +16,15 @@ public class Provider {
 
             while (true) {
 
-                System.out.println("Waiting for connection");
+                System.out.println("\nWaiting for connection");
                 Socket connection = providerSocket.accept();
                 ServerThread T1 = new ServerThread(connection, sharedRegistry);
                 T1.start();
 
             }
 
-        } 
-        
+        }
+
         catch (IOException e1) {
 
             e1.printStackTrace();
@@ -32,5 +32,5 @@ public class Provider {
         }
 
     }
-    
+
 }

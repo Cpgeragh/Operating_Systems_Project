@@ -59,5 +59,5 @@ public class Account {
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
-    
+
 }

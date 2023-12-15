@@ -35,8 +35,8 @@ public class ServerThread extends Thread {
             loggedInAccount.lodgeMoney(amount);
             sendMessage("\nMoney lodged successfully. New balance is: " + loggedInAccount.getInitialBalance());
 
-        } 
-        
+        }
+
         else {
 
             sendMessage("\nError, Account Not Found");
@@ -47,33 +47,33 @@ public class ServerThread extends Thread {
 
     private void registeredUserList() {
         String[] userList = myRegistry.getListing();
-    
+
         if (userList.length > 0) {
             // Send the number of registered users
             sendMessage("\nRegistered Users: " + userList.length);
-    
+
             // Iterate through the user list
             for (String user : userList) {
                 // Print the user information before processing
                 System.out.println("DEBUG: Raw user info: " + user);
-    
+
                 // Extract information directly from the user string
                 String[] userInfo = user.split("\n"); // Split by newline character
                 String name = userInfo[1].substring(userInfo[1].indexOf(":") + 2);
                 String ppsNumber = userInfo[2].substring(userInfo[2].indexOf(":") + 2);
                 String email = userInfo[3].substring(userInfo[3].indexOf(":") + 2);
-    
+
                 // Display the user information
                 sendMessage("\nName: " + name + "\nPPS Number: " + ppsNumber + "\nEmail: " + email);
             }
-    
+
             // Send a signal to indicate the end of user information
             sendMessage("END_OF_USER_LISTING");
         } else {
             // Handle the case where no users are found
             sendMessage("\nError, No Users Found");
         }
-    }//////ddddddd
+    }////// ddddddd
 
     private void transferMoney() {
         try {
@@ -83,52 +83,54 @@ public class ServerThread extends Thread {
             // Prompt for recipient details
             sendMessage("\nEnter the recipient's email address:");
             String recipientEmail = (String) in.readObject();
-    
+
             sendMessage("\nEnter the recipient's PPS number:");
             String recipientPPS = (String) in.readObject();
-    
+
             // Validate recipient details
             Account recipientAccount = myRegistry.findAccountByEmailAndPPS(recipientEmail, recipientPPS);
-    
+
             if (recipientAccount == null) {
-    
+
                 sendMessage("\nError: Recipient account not found.");
                 return;
 
             }
-    
-            else if(recipientAccount != null) {
+
+            else if (recipientAccount != null) {
 
                 // Prompt for the amount to transfer
                 sendMessage("\nEnter the amount to transfer: ");
                 amountToTransfer = Float.parseFloat((String) in.readObject());
 
-                        // Validate the amount
-                    if (amountToTransfer <= 0) {
-                        sendMessage("\nError: Invalid amount to transfer.");
-                        return;
-                    }
-            
-                    // Check if the sender has sufficient balance
-                    if (loggedInAccount.getInitialBalance() < amountToTransfer) {
-                        sendMessage("\nError: Insufficient funds for the transfer.");
-                        return;
-                    }
+                // Validate the amount
+                if (amountToTransfer <= 0) {
+                    sendMessage("\nError: Invalid amount to transfer.");
+                    return;
+                }
+
+                // Check if the sender has sufficient balance
+                if (loggedInAccount.getInitialBalance() < amountToTransfer) {
+                    sendMessage("\nError: Insufficient funds for the transfer.");
+                    return;
+                }
 
             }
-            
+
             // Perform the money transfer
-        loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
-        recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
+            loggedInAccount.lodgeMoney(-amountToTransfer); // Deduct from sender's balance
+            recipientAccount.lodgeMoney(amountToTransfer); // Add to recipient's balance
 
-        // Record the transaction in the transaction history of the sender
-        loggedInAccount.addTransaction(new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
+            // Record the transaction in the transaction history of the sender
+            loggedInAccount.addTransaction(
+                    new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
 
-        // Record the transaction in the transaction history of the recipient
-        recipientAccount.addTransaction(new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
+            // Record the transaction in the transaction history of the recipient
+            recipientAccount.addTransaction(
+                    new Transaction(loggedInAccount.getEmail(), recipientAccount.getEmail(), amountToTransfer));
 
-        sendMessage("\nMoney transfer successful. New balance is: " + loggedInAccount.getInitialBalance());
-    
+            sendMessage("\nMoney transfer successful. New balance is: " + loggedInAccount.getInitialBalance());
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -153,16 +155,16 @@ public class ServerThread extends Thread {
 
                 }
 
-            } 
-            
+            }
+
             else {
 
                 sendMessage("\nNo transactions found.");
 
             }
 
-        } 
-        
+        }
+
         else {
 
             sendMessage("\nError, Account Not Found");
@@ -179,7 +181,7 @@ public class ServerThread extends Thread {
 
                 sendMessage("\nEnter your current password:");
                 String currentPassword = (String) in.readObject();
-    
+
                 // Check if the entered current password matches the actual current password
                 if (!currentPassword.equals(loggedInAccount.getPassword())) {
 
@@ -187,24 +189,24 @@ public class ServerThread extends Thread {
                     return;
 
                 }
-    
+
                 sendMessage("\nEnter your new password: ");
                 String newPassword = (String) in.readObject();
-    
+
                 // Update the password in the logged-in account
                 loggedInAccount.setPassword(newPassword);
                 sendMessage("\nPassword updated successfully.");
 
             }
 
-            } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
 
-                e.printStackTrace();
-                
-            }
+            e.printStackTrace();
+
+        }
 
     }
-    
+
     ///// LOGIN METHOD //////
     private void successfulLogin() {
 
@@ -322,6 +324,7 @@ public class ServerThread extends Thread {
                 sendMessage("Please enter 2 to LOGIN");
                 sendMessage("Please enter 3 to VIEW STORED ACCOUNTS\n");
                 message = (String) in.readObject();
+                System.out.println("\nclient > " + message);
 
                 if (message.equalsIgnoreCase("1")) {
 
@@ -339,9 +342,8 @@ public class ServerThread extends Thread {
 
                     boolean loginSuccessful = performLogin(email, password);
 
-                    
                     if (loginSuccessful) {
-                        
+
                         sendMessage("\nLogin successful! Please choose an option:");
 
                         successfulLogin();
@@ -385,21 +387,13 @@ public class ServerThread extends Thread {
     }
 
     void sendMessage(String msg) {
-
         try {
-
             out.writeObject(msg);
             out.flush();
-            System.out.println("server>" + msg);
-
-        }
-
-        catch (IOException ioException) {
-
+            System.out.println("\nserver > " + msg);
+        } catch (IOException ioException) {
             ioException.printStackTrace();
-
         }
-
     }
 
 } // Inheritor Class Ends

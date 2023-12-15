@@ -9,7 +9,8 @@ public class AccountRegistry {
         accountList = new LinkedList<>();
     }
 
-    public synchronized void addAccount(String name, String ppsNumber, String email, String password, String address, String initialBalance) {
+    public synchronized void addAccount(String name, String ppsNumber, String email, String password, String address,
+            String initialBalance) {
         Account temp = new Account(name, ppsNumber, email, password, address, Float.parseFloat(initialBalance));
         accountList.add(temp);
     }
