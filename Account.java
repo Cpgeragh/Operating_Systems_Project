@@ -55,4 +55,9 @@ public class Account {
     public LinkedList<Transaction> getTransactionHistory() {
         return transactionHistory;
     }
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+    
 }

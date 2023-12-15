@@ -187,6 +187,7 @@ public class Requester {
 
                              // If the user chose to see registered users
                             else if (response.equalsIgnoreCase("4")) {
+                                
                                 message = (String) in.readObject();
                                 System.out.println(message);
 
@@ -194,6 +195,35 @@ public class Requester {
                                 System.out.println(message);
 
 
+                            }
+
+                             else if (response.equalsIgnoreCase("5")) {
+
+                                message = (String) in.readObject();
+                                System.out.println(message);
+
+                                response = input.next();
+                                sendMessage(response);
+
+                                message = (String) in.readObject();
+
+                                if(message.equalsIgnoreCase("\nError: Incorrect password.")){
+
+                                        System.out.println(message);
+                                }
+
+                                else if(message.equalsIgnoreCase("\nEnter your new password: ")){
+
+                                        System.out.println(message);
+                                        
+                                        response = input.next();
+                                        sendMessage(response);
+
+                                        message = (String) in.readObject();
+                                        System.out.println(message);
+
+                                }
+                                
                             }
 
                             // After processing action

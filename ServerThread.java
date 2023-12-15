@@ -136,20 +136,28 @@ public class ServerThread extends Thread {
 
     private void viewAccountTransactions() {
 
-    if (loggedInAccount != null) {
+        if (loggedInAccount != null) {
 
-        LinkedList<Transaction> transactions = loggedInAccount.getTransactionHistory();
+            LinkedList<Transaction> transactions = loggedInAccount.getTransactionHistory();
 
-        if (transactions.size() > 0) {
+            if (transactions.size() > 0) {
 
-            sendMessage("\nTransaction History:");
+                sendMessage("\nTransaction History:");
 
-            for (Transaction transaction : transactions) {
+                for (Transaction transaction : transactions) {
 
-                sendMessage("Sender: " + transaction.getSenderEmail() +
-                        "\nRecipient: " + transaction.getRecipientEmail() +
-                        "\nAmount: " + transaction.getAmount() +
-                        "\n----------------------");
+                    sendMessage("Sender: " + transaction.getSenderEmail() +
+                            "\nRecipient: " + transaction.getRecipientEmail() +
+                            "\nAmount: " + transaction.getAmount() +
+                            "\n----------------------");
+
+                }
+
+            } 
+            
+            else {
+
+                sendMessage("\nNo transactions found.");
 
             }
 
@@ -157,19 +165,45 @@ public class ServerThread extends Thread {
         
         else {
 
-            sendMessage("\nNo transactions found.");
+            sendMessage("\nError, Account Not Found");
 
         }
 
-    } 
-    
-    else {
-
-        sendMessage("\nError, Account Not Found");
-
     }
 
-}
+    private void updatePassword() {
+
+        try {
+
+            if (loggedInAccount != null) {
+
+                sendMessage("\nEnter your current password:");
+                String currentPassword = (String) in.readObject();
+    
+                // Check if the entered current password matches the actual current password
+                if (!currentPassword.equals(loggedInAccount.getPassword())) {
+
+                    sendMessage("\nError: Incorrect password.");
+                    return;
+
+                }
+    
+                sendMessage("\nEnter your new password: ");
+                String newPassword = (String) in.readObject();
+    
+                // Update the password in the logged-in account
+                loggedInAccount.setPassword(newPassword);
+                sendMessage("\nPassword updated successfully.");
+
+            }
+
+            } catch (IOException | ClassNotFoundException e) {
+
+                e.printStackTrace();
+                
+            }
+
+    }
     
     ///// LOGIN METHOD //////
     private void successfulLogin() {
@@ -215,6 +249,8 @@ public class ServerThread extends Thread {
                 }
 
                 else if (accountAction.equalsIgnoreCase("5")) {
+
+                    updatePassword();
 
                 }
 
